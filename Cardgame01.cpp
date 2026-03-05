@@ -40,26 +40,26 @@ string cardName(CardType t) {
 // ข้อมูลคำอธิบายการ์ด
 string cardDesc(CardType t) {
     switch (t) {
-        case CardType::LightAttack: return " Damage 10% ";
-        case CardType::HeavyAttack: return " Damage 20% ";
-        case CardType::HealSmall:   return " Heal 10% HP";
-        case CardType::HealBig:     return " Heal 20% HP";
+        case CardType::LightAttack: return " Damage 10 HP ";
+        case CardType::HeavyAttack: return " Damage 20 HP ";
+        case CardType::HealSmall:   return " Heal 10 HP";
+        case CardType::HealBig:     return " Heal 20 HP";
         case CardType::GuardSmall:  return " Guard 25%";
         case CardType::GuardBig:    return " Guard 50%";
-        case CardType::LifeSteal:   return " Damage 15% || Heal 10%";
-        case CardType::Regen:       return " Heal 5% HP per turn 3 turn";
-        case CardType::Pierce:      return " Damage 15% [Guard not count]";
+        case CardType::LifeSteal:   return " Damage 15 HP || Heal 10 HP";
+        case CardType::Regen:       return " Heal 5 HP per for turn 3 turn";
+        case CardType::Pierce:      return " Damage 15 HP [Guard not count]";
         case CardType::Reset:       return " Reset all guard and regen status of enemy";
-        case CardType::Death:       return " Damage 30% [Enemy] || Damage 10% [Player]";
+        case CardType::Death:       return " Damage 30 HP [Enemy] || Damage 10 HP [Player]";
         case CardType::GodShield:   return " Block all damage once";
-        case CardType::Nuke:        return " Damage 50% [Enemy] || Damage 50% [Player]";
+        case CardType::Nuke:        return " Damage 50 HP [Enemy] || Damage 50 HP [Player]";
     }
     return "";
 }
 
 // ข้อมูลผู้เล่น
 struct Player {
-    float hp = 100, maxHp = 100; // ใช้ค่า 100% เป็นฐานหลัก
+    float hp = 100, maxHp = 100; // ใช้ค่า 100 HP เป็นฐานหลัก
     float guard = 0;
     bool godShield = false;
     int regenTurn = 0;
@@ -204,8 +204,8 @@ struct Game {
                 me.heal(me.lastTurnDmg);
                 break;
             case CardType::Nuke:
-                en.takeDamage(en.maxHp * 0.50f, true); // เราจะตายกันหมด 
-                me.takeDamage(me.maxHp * 0.50f, true); // True เพื่อให้ดาเมจเข้าตัวตรงๆ ไม่สนเกราะ
+                en.takeDamage(en.maxHp * 0.50f, true); 
+                me.takeDamage(me.maxHp * 0.50f, true); // True เพื่อให้ดาเมจเข้าตัวตรงๆ ไม่สนเกราะ  เราจะตายกันหมด 
                 break;    
         }
     }
@@ -222,7 +222,7 @@ struct Game {
         cout << "Your Hand (" << p[cur].hand.size() << " cards):\n";
         cout << " " << "\n";
 
-        for (int i = 0; i < p[cur].hand.size(); i++) {
+        for (int i = 1; i < p[cur].hand.size(); i++) {
             CardType t = p[cur].hand[i].type;
             cout << "  [" << i << "] " << cardName(t) << "\n         " << cardDesc(t) << "\n";
         }
@@ -234,7 +234,7 @@ struct Game {
             showStatus();
             cout << " " << "\n";
             cout << "Cards played this turn: " << usedCard << "/2\n";
-            cout << "Choose a card to play (0 to " << p[cur].hand.size() - 1 << "), or -1 to End Turn: ";
+            cout << "Choose a card to play (1 to " << p[cur].hand.size() - 1 << "), or 0 to End Turn: ";
             cout << " " << "\n";
             int idx; 
             
@@ -246,9 +246,9 @@ struct Game {
                 continue;
             }
 
-            if (idx == -1) break; // กดจบเทิร์น
+            if (idx == 0) break; // กดจบเทิร์น
             
-            if (idx < 0 || idx >= p[cur].hand.size()) {
+            if (idx < 1 || idx > p[cur].hand.size()) {
                 cout << "X Invalid card index!\n";
                 continue;
             }
